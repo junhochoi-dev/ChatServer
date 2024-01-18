@@ -10,12 +10,13 @@ import java.sql.Timestamp;
 @Setter
 public class ChatMessageDto {
     private String id;
-    private String channel;
+    //private String channel;
     private String content;
 
-    private String sender;
+    //private String sender;
+    private String nickname;
 
-    private MessageType type;
+    //private MessageType type;
     
     // 전송시간
 }
