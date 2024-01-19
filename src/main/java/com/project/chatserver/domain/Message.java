@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 public class Message{
     @Id
     private String id;
+    private String sender;
     private String content;
+
+    private String channel;
 
     private LocalDateTime createdTime;
 }
