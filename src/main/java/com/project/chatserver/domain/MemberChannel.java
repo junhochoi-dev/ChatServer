@@ -9,5 +9,6 @@ public class MemberChannel {
 	private Long id;
 
 	private Long memberId;
+
 	private Long channelId;
 }

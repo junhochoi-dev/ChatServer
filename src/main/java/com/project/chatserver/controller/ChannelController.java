@@ -18,21 +18,19 @@ import java.util.UUID;
 public class ChannelController {
     private final ChannelService chatChannelService;
 
-    private ArrayList<String> channelList = new ArrayList<>();
-
-    
-    // channel 2인
-    // channel 다인
-
-    @PostMapping("/channel/search/name")
-    public String searchName(){
+    //@PostMapping("/channel/min")
+    @PostMapping("/channel/private/search")
+    public String searchPrivateChannel(@RequestBody Long memberId){
+        //chatChannelService.searchPrivateChannel();
         return null;
     }
-    @PostMapping("/channel/search/")
-    public String searchId(){
+    @PostMapping("/channel/public/search")
+    public String searchPublicChannel(@RequestBody String name){
+
         return null;
     }
 
+    // private ArrayList<String> channelList = new ArrayList<>();
 
     // Member, Channel
     // @GetMapping("/channel//create")
