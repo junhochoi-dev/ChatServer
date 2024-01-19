@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 public class MemberChannel {
 	@Id
 	private Long id;
-	private Long 멤버아이디;
 
-	private Long 채널아이디;
+	private Long memberId;
+	private Long channelId;
 }

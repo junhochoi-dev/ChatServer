@@ -4,6 +4,7 @@ import com.project.chatserver.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class ChannelController {
     // channel 다인
 
     // Member, Channel
-    @GetMapping("/channel/create")
-    public String create(){
-        String channel = UUID.randomUUID().toString();
-        channelList.add(channel);
-        return channel;
-    }
-
+    // @GetMapping("/channel//create")
+    // public String create(@RequestBody("member_id") Long memberId){
+    //     String channel = UUID.randomUUID().toString();
+    //     channelList.add(channel);
+    //     return channel;
+    // }
+    //
     @GetMapping("/channel/list")
     public List<String> list(){
         return channelList;
