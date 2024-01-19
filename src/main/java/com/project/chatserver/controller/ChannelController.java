@@ -21,6 +21,8 @@ public class ChannelController {
     
     // channel 2인
     // channel 다인
+
+    // Member, Channel
     @GetMapping("/channel/create")
     public String create(){
         String channel = UUID.randomUUID().toString();
