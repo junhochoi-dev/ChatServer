@@ -11,19 +11,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // "ws://localhost:8080/websocketserver" WebSocket 연결 주소
-        registry.addEndpoint("/websocketserver").setAllowedOrigins("*");
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // /queue 앞에 prefix가 붙은 주소로 메세지 수령 (개인채팅)
-        // /subscription 앞에 prefix가 붙은 주소로 메세지 수령 (단체채팅)
-        registry.enableSimpleBroker("/subscription");
-
-
-        // Broker로 보내주세요!!!!!!!!!!
-        // /publish 앞에 prefix가 붙은 주소로 메세지 전송
-        registry.setApplicationDestinationPrefixes("/publish");
+        registry.setApplicationDestinationPrefixes("/app");
+        registry.enableSimpleBroker("/chatroom","/user");
+        registry.setUserDestinationPrefix("/user");
     }
 }
+

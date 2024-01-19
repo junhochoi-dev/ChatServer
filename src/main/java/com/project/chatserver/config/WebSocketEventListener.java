@@ -1,6 +1,7 @@
 package com.project.chatserver.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -10,16 +11,18 @@ import org.springframework.web.socket.messaging.*;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class WebSocketEventListener {
     private final SimpUserRegistry simpUserRegistry;
     private final SimpMessagingTemplate simpMessagingTemplate;
+
     @EventListener
-    public void handleWebSocketConnectEvent(SessionConnectedEvent sessionConnectedEvent) {
-        System.out.println("[CONNECT] - " + sessionConnectedEvent.getUser());
+    public void handleWebSocketConnectionEvent(SessionConnectEvent sessionConnectEvent){
+        log.info("CONNECT");
     }
     @EventListener
-    public void handleWebSocketDisconnectEvent(SessionDisconnectEvent sessionDisconnectEvent) {
-        System.out.println("[DISCONNECT] - " + sessionDisconnectEvent.getCloseStatus());
+    public void handlerWebSocketDisconnectionEvent(SessionDisconnectEvent sessionDisconnectEvent){
+        log.info("DISCONNECT: SOCKETID[{}]","test");
     }
 
     @EventListener
