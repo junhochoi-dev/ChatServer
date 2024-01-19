@@ -4,6 +4,7 @@ import com.project.chatserver.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,16 @@ public class ChannelController {
     // channel 2인
     // channel 다인
 
+    @PostMapping("/channel/search/name")
+    public String searchName(){
+        return null;
+    }
+    @PostMapping("/channel/search/")
+    public String searchId(){
+        return null;
+    }
+
+
     // Member, Channel
     // @GetMapping("/channel//create")
     // public String create(@RequestBody("member_id") Long memberId){
@@ -31,8 +42,8 @@ public class ChannelController {
     //     return channel;
     // }
     //
-    @GetMapping("/channel/list")
-    public List<String> list(){
-        return channelList;
-    }
+    // @GetMapping("/channel/list")
+    // public List<String> list(){
+    //     return channelList;
+    // }
 }

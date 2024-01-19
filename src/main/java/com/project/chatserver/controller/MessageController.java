@@ -18,17 +18,17 @@ public class MessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public MessageDto receiveMessage(@Payload MessageDto messageDto){
-        log.info(messageDto.toString());
-        return messageDto;
-    }
-
-    @MessageMapping("/private-message")
-    public MessageDto recMessage(@Payload MessageDto messageDto){
-        simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
-        log.info(messageDto.toString());
-        return messageDto;
-    }
+    // @MessageMapping("/message")
+    // @SendTo("/chatroom/public")
+    // public MessageDto receiveMessage(@Payload MessageDto messageDto){
+    //     log.info(messageDto.toString());
+    //     return messageDto;
+    // }
+    //
+    // @MessageMapping("/private-message")
+    // public MessageDto recMessage(@Payload MessageDto messageDto){
+    //     simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
+    //     log.info(messageDto.toString());
+    //     return messageDto;
+    // }
 }

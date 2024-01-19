@@ -1,4 +1,4 @@
-package com.project.chatserver.domain;
+package com.project.chatserver.domain.type;
 
 public enum MessageType {
     CHANNEL_IN, CHANNEL_OUT,
