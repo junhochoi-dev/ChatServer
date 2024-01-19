@@ -27,7 +27,7 @@ public class MessageController {
 
     @MessageMapping("/private-message")
     public MessageDto recMessage(@Payload MessageDto messageDto){
-        simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
+        //simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
         log.info(messageDto.toString());
         return messageDto;
     }
