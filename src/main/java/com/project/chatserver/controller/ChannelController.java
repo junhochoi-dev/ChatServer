@@ -16,17 +16,34 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class ChannelController {
-    private final ChannelService chatChannelService;
+    private final ChannelService channelService;
 
-    //@PostMapping("/channel/min")
-    @PostMapping("/channel/private/search")
-    public String searchPrivateChannel(@RequestBody Long memberId){
-        //chatChannelService.searchPrivateChannel();
+    @PostMapping("/channel/private/create")
+    public String createPrivateChannel(@RequestBody Long memberId1, @RequestBody Long memberId2){
+        // A와 B의 개인 채널 생성
+
+        // 있으면 이미 있는 거 제공
+
+        // 없으면 생성해서 제공
+        channelService.createPrivateChannel(memberId1, memberId2);
         return null;
     }
+
+    @PostMapping("/channel/public/create")
+    public String createPublicChannel(@RequestBody String name){
+        channelService.createPublicChannel(name);
+        return null;
+    }
+
+    @PostMapping("/channel/private/search")
+    public String searchPrivateChannel(@RequestBody Long memberId){
+        // 나랑 연결된 채널 찾기
+        return null;
+    }
+
     @PostMapping("/channel/public/search")
     public String searchPublicChannel(@RequestBody String name){
-
+        // 열린 오프채널 찾기
         return null;
     }
 
