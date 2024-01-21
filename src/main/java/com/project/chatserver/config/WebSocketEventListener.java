@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.messaging.*;
 
 @Component
@@ -18,21 +20,14 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectionEvent(SessionConnectEvent sessionConnectEvent){
-        log.info("CONNECT");
-    }
-    @EventListener
-    public void handlerWebSocketDisconnectionEvent(SessionDisconnectEvent sessionDisconnectEvent){
-        log.info("DISCONNECT: SOCKETID[{}]","test");
+        String sessionId = sessionConnectEvent.getMessage().getHeaders().get("simpSessionId").toString();
+        log.info("CONNECTION SOCKETID: [{}]", sessionId);
     }
 
     @EventListener
-    public void handleWebSocketMessageEvent(AbstractSubProtocolEvent event) {
-        if (event instanceof SessionSubscribeEvent) {
-            handleSubscribeEvent((SessionSubscribeEvent) event);
-        } else if (event instanceof SessionUnsubscribeEvent) {
-            handleUnsubscribeEvent((SessionUnsubscribeEvent) event);
-        }
-        //System.out.println(event.getMessage());
+    public void handlerWebSocketDisconnectionEvent(SessionDisconnectEvent sessionDisconnectEvent){
+        String sessionId = sessionDisconnectEvent.getSessionId();
+        log.info("DISCONNECT SOCKETID: [{}]", sessionId);
     }
 
     private void handleSubscribeEvent(SessionSubscribeEvent event) {
@@ -46,7 +41,6 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();
 
-        // Unsubscribe 이벤트 처리
         System.out.println("User unsubscribed from: " + destination + " - " + accessor.getUser());
     }
 }
