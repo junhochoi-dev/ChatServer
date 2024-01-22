@@ -1,12 +1,10 @@
-package com.project.chatserver.config;
+package com.project.chatserver.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 
-
 @EnableKafka
 @Configuration
-public class KafkaConfig {
-    // Producer
-    // Consumer
+public class KafkaConsumerConfig {
+
 }

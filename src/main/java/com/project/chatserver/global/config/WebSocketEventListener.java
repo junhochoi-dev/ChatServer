@@ -1,4 +1,4 @@
-package com.project.chatserver.config;
+package com.project.chatserver.global.config;
 
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.service.ChannelService;

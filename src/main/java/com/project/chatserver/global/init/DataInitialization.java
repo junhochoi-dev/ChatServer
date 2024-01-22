@@ -1,4 +1,4 @@
-package com.project.chatserver.domain.util;
+package com.project.chatserver.global.init;
 
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.domain.type.AccessType;
