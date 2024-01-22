@@ -32,6 +32,7 @@ public class DataInitialization {
                 .reference("EFGH")
                 .memberId(1234L)
                 .build();
+
         multipleChannelRepository.save(multipleChannel1);
     }
 

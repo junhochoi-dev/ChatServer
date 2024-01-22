@@ -25,22 +25,38 @@ import java.util.UUID;
 @Slf4j
 public class ChannelController {
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     private final ChannelService channelService;
 
-    // pub이 MessageMapping 연결
-    @MessageMapping("/channel/{memberId}")
-    public void test(@DestinationVariable Long memberId){
+    @SubscribeMapping("/channel/{memberId}")
+    public void test1(@DestinationVariable Long memberId){
+        System.out.println("server를 통한 구독");
+        simpMessagingTemplate.convertAndSend("/server/channel/1234", "웹소켓리스트 제공");
+    }
+
+    @MessageMapping("/channel/search/simple")
+    public void test2(@RequestBody Long memberId){
         System.out.println("server를 통한 통신");
         simpMessagingTemplate.convertAndSend("/server/channel/1234", "채팅을 쳤습니다");
     }
 
-    // prefix를 제외한 url
-    @SubscribeMapping("/channel/{memberId}")
-    public void SocketIn(@DestinationVariable Long memberId){
-        System.out.println("server를 통한 구독");
-        simpMessagingTemplate.convertAndSend("/server/channel/1234", "접속을 환영합니다.");
+    @MessageMapping("/channel/search/multiple")
+    public void test3(@RequestBody String name){
+        System.out.println("server를 통한 통신");
+        simpMessagingTemplate.convertAndSend("/server/channel/1234", "커뮤니티 채팅방리스트");
     }
 
+    @MessageMapping("/channel/create/simple")
+    public void test4(@RequestBody Long memberId1, @RequestBody Long memberId2){
+
+    }
+
+    @MessageMapping("/channel/create/multiple")
+    public void test5(@RequestBody String name){
+
+    }
+
+    // 로그인 시, 채널리스트 반환
+    // 온라인 시, 채널리스트 갱신
+    // 록아웃 시,
 }

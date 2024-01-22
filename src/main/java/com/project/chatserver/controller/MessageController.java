@@ -3,6 +3,7 @@ package com.project.chatserver.controller;
 import com.project.chatserver.data.MessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -18,19 +19,24 @@ public class MessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/message")
-    @SendTo("/channel/public")
-    public MessageDto receiveMessage(@Payload MessageDto messageDto){
-        log.info(messageDto.toString());
-        return messageDto;
+    @MessageMapping("/message/notification")
+    public void test(@Payload MessageDto messageDto){
+        simpMessagingTemplate.convertAndSend("/server/channel/notification", "공지내용");
     }
 
-    // @MessageMapping("/private-message")
-    @MessageMapping("/message/test")
-    @SendTo("/channel/{UUID}")
-    public MessageDto recMessage(@Payload MessageDto messageDto){
-        //simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
+
+    // 공통 커뮤니티
+    @MessageMapping("/message/public")
+    public void testtest1(@Payload MessageDto messageDto){
         log.info(messageDto.toString());
-        return messageDto;
+        simpMessagingTemplate.convertAndSend("/server/channel/public", "메세지");
     }
+
+    // Reference를 통한 메세지 전송
+    @MessageMapping("/message/{reference}")
+    public void testtest2(@DestinationVariable String reference, @Payload MessageDto messageDto){
+        log.info(messageDto.toString());
+        simpMessagingTemplate.convertAndSend("/server/channel/" + reference, "메세지");
+    }
+
 }
