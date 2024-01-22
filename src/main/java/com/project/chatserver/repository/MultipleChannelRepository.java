@@ -1,9 +1,10 @@
 package com.project.chatserver.repository;
 
-import com.project.chatserver.domain.Message;
+import com.project.chatserver.domain.linktable.MultipleChannel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long> {
+public interface MultipleChannelRepository extends JpaRepository<MultipleChannel, Long> {
+
 }

@@ -19,13 +19,15 @@ public class MessageController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/message")
-    @SendTo("/chatroom/public")
+    @SendTo("/channel/public")
     public MessageDto receiveMessage(@Payload MessageDto messageDto){
         log.info(messageDto.toString());
         return messageDto;
     }
 
-    @MessageMapping("/private-message")
+    // @MessageMapping("/private-message")
+    @MessageMapping("/message/test")
+    @SendTo("/channel/{UUID}")
     public MessageDto recMessage(@Payload MessageDto messageDto){
         //simpMessagingTemplate.convertAndSendToUser(messageDto.getReceiverName(),"/private",messageDto);
         log.info(messageDto.toString());

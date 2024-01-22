@@ -1,12 +1,20 @@
 package com.project.chatserver.controller;
 
+import com.project.chatserver.data.ChannelDto;
+import com.project.chatserver.data.MessageDto;
 import com.project.chatserver.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,49 +24,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class ChannelController {
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
+
     private final ChannelService channelService;
 
-    @PostMapping("/channel/private/create")
-    public String createPrivateChannel(@RequestBody Long memberId1, @RequestBody Long memberId2){
-        // A와 B의 개인 채널 생성
-
-        // 있으면 이미 있는 거 제공
-
-        // 없으면 생성해서 제공
-        channelService.createPrivateChannel(memberId1, memberId2);
-        return null;
+    // pub이 MessageMapping 연결
+    @MessageMapping("/channel/{memberId}")
+    public void test(@DestinationVariable Long memberId){
+        System.out.println("server를 통한 통신");
+        simpMessagingTemplate.convertAndSend("/server/channel/1234", "채팅을 쳤습니다");
     }
 
-    @PostMapping("/channel/public/create")
-    public String createPublicChannel(@RequestBody String name){
-        channelService.createPublicChannel(name);
-        return null;
+    // prefix를 제외한 url
+    @SubscribeMapping("/channel/{memberId}")
+    public void SocketIn(@DestinationVariable Long memberId){
+        System.out.println("server를 통한 구독");
+        simpMessagingTemplate.convertAndSend("/server/channel/1234", "접속을 환영합니다.");
     }
 
-    @PostMapping("/channel/private/search")
-    public String searchPrivateChannel(@RequestBody Long memberId){
-        // 나랑 연결된 채널 찾기
-        return null;
-    }
-
-    @PostMapping("/channel/public/search")
-    public String searchPublicChannel(@RequestBody String name){
-        // 열린 오프채널 찾기
-        return null;
-    }
-
-    // private ArrayList<String> channelList = new ArrayList<>();
-
-    // Member, Channel
-    // @GetMapping("/channel//create")
-    // public String create(@RequestBody("member_id") Long memberId){
-    //     String channel = UUID.randomUUID().toString();
-    //     channelList.add(channel);
-    //     return channel;
-    // }
-    //
-    // @GetMapping("/channel/list")
-    // public List<String> list(){
-    //     return channelList;
-    // }
 }

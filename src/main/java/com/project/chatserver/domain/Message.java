@@ -19,5 +19,5 @@ public class Message{
 
     private MessageType messageType;
 
-    private LocalDateTime createdTime;
+    private String createdTime;
 }

@@ -1,5 +1,7 @@
 package com.project.chatserver.config;
 
+import com.project.chatserver.domain.Channel;
+import com.project.chatserver.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -20,37 +22,32 @@ public class WebSocketEventListener {
     private final SimpUserRegistry simpUserRegistry;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    private HashSet<String> sessionList = new HashSet<>();
-
-    public void checkSessionList(){
-        for(String session: sessionList){
-            System.out.println(session);
-        }
-    }
+    private ChannelService channelService;
 
     @EventListener
     public void handleWebSocketConnectionEvent(SessionConnectEvent sessionConnectEvent){
         String sessionId = sessionConnectEvent.getMessage().getHeaders().get("simpSessionId").toString();
         log.info("CONNECTION SOCKETID: [{}]", sessionId);
-        sessionList.add(sessionId);
-        checkSessionList();
     }
 
     @EventListener
     public void handlerWebSocketDisconnectionEvent(SessionDisconnectEvent sessionDisconnectEvent){
         String sessionId = sessionDisconnectEvent.getSessionId();
         log.info("DISCONNECT SOCKETID: [{}]", sessionId);
-        sessionList.remove(sessionId);
-        checkSessionList();
     }
 
+    @EventListener
     private void handleSubscribeEvent(SessionSubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();
 
         System.out.println("User subscribed to: " + destination + " - " + accessor.getUser());
+
+
+        System.out.println(event.getMessage());
     }
 
+    @EventListener
     private void handleUnsubscribeEvent(SessionUnsubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();

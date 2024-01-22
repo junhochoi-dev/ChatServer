@@ -1,5 +1,6 @@
 package com.project.chatserver.data;
 
+import com.project.chatserver.domain.type.AccessType;
 import com.project.chatserver.domain.type.ChannelType;
 
 import lombok.Builder;
@@ -9,5 +10,6 @@ public record ChannelDto (
     String id,
     String name,
     String reference,
-    ChannelType type
+    AccessType accessType,
+    ChannelType channelType
 ) { }
