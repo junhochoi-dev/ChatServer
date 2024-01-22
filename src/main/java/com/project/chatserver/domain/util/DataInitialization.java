@@ -16,10 +16,17 @@ public class DataInitialization {
 
     @PostConstruct
     private void postConstruct(){
-        Channel channel1 = new Channel("김태규와 윤설의 채팅방", "ABCD", AccessType.PUBLIC, ChannelType.SINGLE);
-        channelRepository.save(channel1);
-        Channel channel2 = new Channel("김태규와 김정욱의 채팅방", "DEFG", AccessType.PUBLIC, ChannelType.SINGLE);
-        channelRepository.save(channel2);
+        Channel c1 = Channel.builder()
+                .name("김태규와 김단이의 채팅방").reference("ABCD").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
+        channelRepository.save(c1);
+        Channel c2 = Channel.builder()
+                .name("김태규와 윤설의 채팅방").reference("EFGH").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
+        channelRepository.save(c2);
+        Channel c3 = Channel.builder()
+                .name("김태규와 오희주의 채팅방").reference("QSIW").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
+        channelRepository.save(c3);
+        Channel c4 = Channel.builder()
+                .name("김태규의 홀로 채팅방").reference("AIOW").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
+        channelRepository.save(c4);
     }
-
 }

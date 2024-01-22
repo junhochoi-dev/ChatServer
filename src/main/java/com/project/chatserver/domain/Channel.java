@@ -9,16 +9,19 @@ import java.time.LocalDateTime;
 import com.project.chatserver.domain.type.AccessType;
 import com.project.chatserver.domain.type.ChannelType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
+@NoArgsConstructor
 public class Channel{
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
+
     private String name;
     private String reference;
 
@@ -30,6 +33,7 @@ public class Channel{
     @LastModifiedDate
     private LocalDateTime updatedTime;
 
+    @Builder
     public Channel(String name, String reference, AccessType accessType, ChannelType channelType) {
         this.name = name;
         this.reference = reference;
