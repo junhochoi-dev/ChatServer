@@ -1,5 +1,6 @@
 package com.project.chatserver.data;
 
+import com.project.chatserver.domain.type.MessageType;
 import lombok.*;
 
 import java.time.LocalDateTime;

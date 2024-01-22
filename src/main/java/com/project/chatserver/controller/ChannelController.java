@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @Slf4j
 public class ChannelController {
@@ -31,9 +32,11 @@ public class ChannelController {
     @SubscribeMapping("/channel/{memberId}")
     public void test1(@DestinationVariable Long memberId){
         System.out.println("server를 통한 구독");
-        simpMessagingTemplate.convertAndSend("/server/channel/1234", "웹소켓리스트 제공");
+        List<ChannelDto> channelList = channelService.findChannelListById(memberId);
+        simpMessagingTemplate.convertAndSend("/server/channel/" + memberId, channelList);
     }
 
+    @Deprecated
     @MessageMapping("/channel/search/simple")
     public void test2(@RequestBody Long memberId){
         System.out.println("server를 통한 통신");
