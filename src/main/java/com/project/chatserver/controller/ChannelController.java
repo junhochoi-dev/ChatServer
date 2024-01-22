@@ -48,7 +48,9 @@ public class ChannelController {
 
     @MessageMapping("/channel/create/simple")
     public void test4(@RequestBody Long memberId1, @RequestBody Long memberId2){
-
+        // MemberChannel 있는 지 확인
+            // 있으면 그대로 reference 반환
+            // 없으면 reference 생성 후
     }
 
     @MessageMapping("/channel/create/multiple")
