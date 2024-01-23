@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 public class MessageDto{
     private String content;
 
-    private Channel channel;
+    //private Channel channel;
+    private String reference;
 
     private Long memberId;
     private String nickname;

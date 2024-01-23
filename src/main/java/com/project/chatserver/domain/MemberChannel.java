@@ -14,17 +14,19 @@ public class MemberChannel {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
+//    @ManyToOne
+//    @JoinColumn(name = "channel_id")
+//    private Channel channel;
+
+//    private Long channelId;
 
     private String reference;
 
     private Long memberId;
 
     @Builder
-    public MemberChannel(Channel channel, String reference, Long memberId) {
-        this.channel = channel;
+    public MemberChannel(String reference, Long memberId) {
+        //this.channelId = channelId;
         this.reference = reference;
         this.memberId = memberId;
     }

@@ -16,7 +16,7 @@ public class ChannelDto{
     private String name;
     private String reference;
 
-    private Channel channel;
+    //private Channel channel;
 
     private AccessType accessType;
     private ChannelType channelType;

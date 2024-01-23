@@ -33,16 +33,16 @@ public class DataInitialization {
         channelRepository.save(channel2);
         channelRepository.save(channel3);
 
-        MemberChannel memberChannel1 = MemberChannel.builder().channel(channel1).memberId(123L).reference("ABC").build();
-        MemberChannel memberChannel2 = MemberChannel.builder().channel(channel2).memberId(123L).reference("DEF").build();
-        MemberChannel memberChannel3 = MemberChannel.builder().channel(channel3).memberId(123L).reference("GHI").build();
+        MemberChannel memberChannel1 = MemberChannel.builder().memberId(123L).reference("ABC").build();
+        MemberChannel memberChannel2 = MemberChannel.builder().memberId(123L).reference("DEF").build();
+        MemberChannel memberChannel3 = MemberChannel.builder().memberId(123L).reference("GHI").build();
         memberChannelRepository.save(memberChannel1);
         memberChannelRepository.save(memberChannel2);
         memberChannelRepository.save(memberChannel3);
 
-        Message message1 = Message.builder().channel(channel1).memberId(123L).nickname("김태규").content("아 입실하기 안눌렀다").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
-        Message message2 = Message.builder().channel(channel1).memberId(456L).nickname("김단이").content("사유서 제출하세요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
-        Message message3 = Message.builder().channel(channel1).memberId(123L).nickname("김태규").content("이닦고 올게요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
+        Message message1 = Message.builder().memberId(123L).nickname("김태규").content("아 입실하기 안눌렀다").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
+        Message message2 = Message.builder().memberId(456L).nickname("김단이").content("사유서 제출하세요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
+        Message message3 = Message.builder().memberId(123L).nickname("김태규").content("이닦고 올게요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
         messageRepository.save(message1);
         messageRepository.save(message2);
         messageRepository.save(message3);

@@ -34,49 +34,59 @@ public class ChannelController {
     private final ChannelService channelService;
     private final MessageService messageService;
 
+    static class TestDto {
+        Long senderId;
+        Long receiverId;
+
+        public Long getSenderId() {
+            return senderId;
+        }
+
+        public Long getReceiverId() {
+            return receiverId;
+        }
+    }
+
     @SubscribeMapping("/channel/notification/{memberId}")
-    public void function01(@DestinationVariable Long memberId){
+    public void function01(@DestinationVariable Long memberId) {
         log.info("채팅창 전체 리스트 받기 ");
         List<ChannelDto> channelDtos = channelService.findChannelListByMemberId(memberId);
         simpMessagingTemplate.convertAndSend("/server/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
     }
+
     @SubscribeMapping("/channel/{reference}")
-    public void function02(@DestinationVariable String reference){
+    public void function02(@DestinationVariable String reference) {
         log.info("전체 채팅 로그 받기");
         List<MessageDto> messageDtos = messageService.findMessageListByReference(reference);
         simpMessagingTemplate.convertAndSend("/server/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(messageDtos));
     }
 
     @MessageMapping("/channel/create/simple")
-    public void function03(@RequestBody Long memberId1, @RequestBody Long memberId2){
+    public void function03(@Payload TestDto testDto) {
         log.info("단일 채팅방 생성");
+        Long memberId1 = testDto.getSenderId();
+        Long memberId2 = testDto.getReceiverId();
+
         channelService.createSimpleChannel(memberId1, memberId2);
         function01(memberId1);
         function01(memberId2);
-//        simpMessagingTemplate.convertAndSend("/server/channel/notification/" + memberId1, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
-//        simpMessagingTemplate.convertAndSend("/server/channel/notification/" + memberId2, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
-        // MemberChannel 있는 지 확인
-            // 있으면 그대로 reference 반환
-            // 없으면 reference 생성 후
     }
 
     @Deprecated
     @MessageMapping("/channel/search/simple")
-    public void test2(@RequestBody Long memberId){
+    public void test2(@RequestBody Long memberId) {
         System.out.println("server를 통한 통신");
         simpMessagingTemplate.convertAndSend("/server/channel/1234", "채팅을 쳤습니다");
     }
 
     @MessageMapping("/channel/search/multiple")
-    public void test3(@RequestBody String name){
+    public void test3(@RequestBody String name) {
         System.out.println("server를 통한 통신");
         simpMessagingTemplate.convertAndSend("/server/channel/1234", "커뮤니티 채팅방리스트");
     }
 
-
-
     @MessageMapping("/channel/create/multiple")
-    public void test5(@RequestBody String name){
+    public void test5(@RequestBody String name) {
 
     }
 

@@ -21,23 +21,27 @@ public class Message {
 
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
+//    @ManyToOne
+//    @JoinColumn(name = "channel_id")
+//    private Channel channel;
+
+//    private Long channelId;
 
     private Long memberId;
     private String nickname;
+    private String reference;
 
     private MessageType messageType;
 
     private LocalDateTime createdTime;
 
     @Builder
-    public Message(String content, Channel channel, Long memberId, String nickname, MessageType messageType, LocalDateTime createdTime) {
+
+    public Message(String content, Long memberId, String nickname, String reference, MessageType messageType, LocalDateTime createdTime) {
         this.content = content;
-        this.channel = channel;
         this.memberId = memberId;
         this.nickname = nickname;
+        this.reference = reference;
         this.messageType = messageType;
         this.createdTime = createdTime;
     }
