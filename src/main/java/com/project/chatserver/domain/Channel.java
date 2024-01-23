@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import com.project.chatserver.domain.type.AccessType;
 import com.project.chatserver.domain.type.ChannelType;
@@ -13,9 +14,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-@NoArgsConstructor
 @Getter
-public class Channel{
+@NoArgsConstructor
+public class Channel {
     @Id
     @GeneratedValue
     private Long id;

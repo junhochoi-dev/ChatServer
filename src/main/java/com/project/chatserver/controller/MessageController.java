@@ -30,7 +30,7 @@ public class MessageController {
     @MessageMapping("/message/public")
     public void testtest1(@Payload MessageDto messageDto){
         log.info(messageDto.toString());
-        messageService.saveMessage(messageDto);
+        //messageService.saveMessage(messageDto);
         simpMessagingTemplate.convertAndSend("/server/channel/public", "메세지");
     }
 
@@ -38,7 +38,7 @@ public class MessageController {
     @MessageMapping("/message/{reference}")
     public void testtest2(@DestinationVariable String reference, @Payload MessageDto messageDto){
         log.info(messageDto.toString());
-        messageService.saveMessage(messageDto);
+        //messageService.saveMessage(messageDto);
         simpMessagingTemplate.convertAndSend("/server/channel/" + reference, "메세지");
     }
 

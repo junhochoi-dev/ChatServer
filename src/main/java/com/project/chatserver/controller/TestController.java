@@ -15,6 +15,6 @@ public class TestController {
     @PostMapping("/test")
     public ResponseEntity<?> channelList(){
         System.out.println("TEST");
-        return ResponseEntity.status(HttpStatus.OK).body(channelService.findChannelListById(1L));
+        return ResponseEntity.status(HttpStatus.OK).body(channelService.findChannelListByMemberId(123L));
     }
 }
