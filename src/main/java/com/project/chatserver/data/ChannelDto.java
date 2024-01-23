@@ -3,20 +3,24 @@ package com.project.chatserver.data;
 import com.project.chatserver.domain.type.AccessType;
 import com.project.chatserver.domain.type.ChannelType;
 
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Data
 @Builder
-public record ChannelDto (
-    String id,
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChannelDto{
+    private String id;
 
-    String name,
-    String reference,
+    private String name;
+    private String reference;
 
-    AccessType accessType,
-    ChannelType channelType,
+    private AccessType accessType;
+    private ChannelType channelType;
 
-    LocalDateTime createdTime,
-    LocalDateTime updatedTime
-) { }
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
+}

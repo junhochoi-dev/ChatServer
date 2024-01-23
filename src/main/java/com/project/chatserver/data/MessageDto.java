@@ -5,11 +5,15 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Data
 @Builder
-public record MessageDto(
-    String sender,
-    String content,
-    String reference,
-    MessageType messageType,
-    LocalDateTime createdTime
-) { }
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class MessageDto{
+    private String sender;
+    private String content;
+    private String reference;
+    private MessageType messageType;
+    private LocalDateTime createdTime;
+}
