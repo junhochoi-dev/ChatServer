@@ -1,64 +1,72 @@
 package com.project.chatserver.controller;
 
+import com.project.chatserver.data.ChannelDto;
+import com.project.chatserver.data.MessageDto;
+import com.project.chatserver.data.request.CreateMultipleChannelRequestDto;
+import com.project.chatserver.data.request.CreateSimpleChannelRequestDto;
+import com.project.chatserver.data.response.MessageListResponseDto;
 import com.project.chatserver.service.ChannelService;
+import com.project.chatserver.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @Slf4j
 public class ChannelController {
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
     private final ChannelService channelService;
+    private final MessageService messageService;
 
-    @PostMapping("/channel/private/create")
-    public String createPrivateChannel(@RequestBody Long memberId1, @RequestBody Long memberId2){
-        // A와 B의 개인 채널 생성
+    private final String BROKERPREFIX = "/server";
 
-        // 있으면 이미 있는 거 제공
-
-        // 없으면 생성해서 제공
-        channelService.createPrivateChannel(memberId1, memberId2);
-        return null;
+    @SubscribeMapping("/channel/notification/{memberId}")
+    public void updateChannelList(@DestinationVariable Long memberId) {
+        log.info("[CHANNEL] : Update Channel List ({})", memberId);
+        // ChannelList
+        List<ChannelDto> channelDtos = channelService.findChannelListByMemberId(memberId);
+        simpMessagingTemplate.convertAndSend(BROKERPREFIX+ "/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
     }
 
-    @PostMapping("/channel/public/create")
-    public String createPublicChannel(@RequestBody String name){
-        channelService.createPublicChannel(name);
-        return null;
+    @SubscribeMapping("/channel/{reference}")
+    public void updateMessageList(@DestinationVariable String reference) {
+        log.info("[CHANNEL] : Update Message List ({})", reference);
+        // MessageList
+        MessageListResponseDto responseDto = messageService.findMessageListByReference(reference);
+        simpMessagingTemplate.convertAndSend( BROKERPREFIX +"/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
     }
 
-    // @PostMapping("/channel/private/search")
-    // public String searchPrivateChannel(@RequegstBody Long memberId){
-    //     // 나랑 연결된 채널 찾기
-    //     return null;
-    // }
-
-    @PostMapping("/channel/public/search")
-    public String searchPublicChannel(@RequestBody String name){
-        // 열린 오프채널 찾기
-        return null;
+    @MessageMapping("/channel/create/simple")
+    public void createSimpleChannel(@Payload CreateSimpleChannelRequestDto requestDto) {
+        log.info("[CHANNEL] : SIMPLE CHANNEL CREATE ({}, {})", requestDto.getSenderId(), requestDto.getReceiverId());
+        channelService.createSimpleChannel(requestDto);
+        updateChannelList(requestDto.getSenderId());
+        updateChannelList(requestDto.getReceiverId());
     }
 
-    // private ArrayList<String> channelList = new ArrayList<>();
-
-    // Member, Channel
-    // @GetMapping("/channel//create")
-    // public String create(@RequestBody("member_id") Long memberId){
-    //     String channel = UUID.randomUUID().toString();
-    //     channelList.add(channel);
-    //     return channel;
-    // }
-    //
-    // @GetMapping("/channel/list")
-    // public List<String> list(){
-    //     return channelList;
-    // }
+    @MessageMapping("/channel/create/multiple")
+    public void createMultipleChannel(@Payload CreateMultipleChannelRequestDto requestDto) {
+        log.info("[CHANNEL] : MULTIPLE CHANNEL CREATE ({}, {})", requestDto.getName(), requestDto.getMemberId());
+        channelService.createMultipleChannel(requestDto);
+        updateChannelList(requestDto.getMemberId());
+    }
 }

@@ -1,29 +1,59 @@
 package com.project.chatserver.service;
 
-import java.util.UUID;
-
+import com.project.chatserver.data.ChannelDto;
+import com.project.chatserver.data.request.CreateMultipleChannelRequestDto;
+import com.project.chatserver.data.request.CreateSimpleChannelRequestDto;
+import com.project.chatserver.domain.Channel;
+import com.project.chatserver.domain.MemberChannel;
+import com.project.chatserver.repository.ChannelRepository;
+import com.project.chatserver.repository.MemberChannelRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import com.project.chatserver.repository.ChannelRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ChannelService {
+    private final ChannelRepository channelRepository;
+    private final MemberChannelRepository memberChannelRepository;
 
-	private final ChannelRepository channelRepository;
+    public List<ChannelDto> findChannelListByMemberId(Long memberId) {
+        List<MemberChannel> memberChannels = memberChannelRepository.findAllByMemberId(memberId);
+        List<ChannelDto> channelDtos = new ArrayList<>();
+        for (MemberChannel memberChannel : memberChannels) {
+            ChannelDto channelDto = ChannelDto.builder().reference(memberChannel.getReference()).build();
+            channelDtos.add(channelDto);
+        }
+        return channelDtos;
+    }
 
-	public void createPrivateChannel(Long memberId1, Long memberId2) {
-		// 있으면 있는 거 보내주기
-		String reference = UUID.randomUUID().toString();
-		// 없으면 없는 거 보내주기
-			// 각각 MemberChannel 만들기
-	}
+    @Transactional
+    public void createSimpleChannel(CreateSimpleChannelRequestDto requestDto) {
+        Long memberId1 = requestDto.getSenderId();
+        Long memberId2 = requestDto.getReceiverId();
+        String reference = memberId1 < memberId2
+                ? memberId1.toString() + "&" + memberId2.toString()
+                : memberId2.toString() + "&" + memberId1.toString();
+        Channel channel = channelRepository.findByReference(reference);
+        if (channel == null) {
+            channel = Channel.builder().name(memberId1.toString() + "과" + memberId2.toString() + "의 채팅방").reference(reference).build();
+            channelRepository.save(channel);
+        }
 
-	public void createPublicChannel(String name) {
-		// 같은 이름이 있는 지 확인
-		// 없으면 생성해서 제공
-		String reference = UUID.randomUUID().toString();
-	}
+        MemberChannel memberChannel1 = MemberChannel.builder().memberId(memberId1).reference(reference).build();
+        MemberChannel memberChannel2 = MemberChannel.builder().memberId(memberId2).reference(reference).build();
+        memberChannelRepository.save(memberChannel1);
+        memberChannelRepository.save(memberChannel2);
+    }
+
+    public void createMultipleChannel(CreateMultipleChannelRequestDto requestDto) {
+
+    }
 }

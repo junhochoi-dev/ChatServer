@@ -1,14 +1,32 @@
 package com.project.chatserver.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class MemberChannel {
-	@Id
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	private Long memberId;
+    // Member
+    private Long memberId;
+    private String nickname;
 
-	private Long channelId;
+    // Channel
+    private Long channelId;
+    private String reference;
+
+    @Builder
+    public MemberChannel(Long memberId, String nickname, Long channelId, String reference) {
+        this.memberId = memberId;
+        this.nickname = nickname;
+        this.channelId = channelId;
+        this.reference = reference;
+    }
 }

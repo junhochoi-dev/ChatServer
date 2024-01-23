@@ -1,23 +1,44 @@
 package com.project.chatserver.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import com.project.chatserver.domain.type.MessageType;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-public class Message{
+@Getter
+@NoArgsConstructor
+public class Message {
     @Id
-    private String id;
-    private String sender;
+    @GeneratedValue
+    private Long id;
     private String content;
+    private MessageType messageType;
+    private LocalDateTime createdTime;
 
+    // Member
+    private Long memberId;
+    private String nickname;
+
+    // Channel
+    private Long channelId;
     private String reference;
 
-    private MessageType messageType;
-
-    private LocalDateTime createdTime;
+    @Builder
+    public Message(String content, MessageType messageType, LocalDateTime createdTime, Long memberId, String nickname,
+        Long channelId, String reference) {
+        this.content = content;
+        this.messageType = messageType;
+        this.createdTime = createdTime;
+        this.memberId = memberId;
+        this.nickname = nickname;
+        this.channelId = channelId;
+        this.reference = reference;
+    }
 }
