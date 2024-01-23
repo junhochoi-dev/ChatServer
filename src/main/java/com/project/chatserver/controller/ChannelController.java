@@ -52,7 +52,7 @@ public class ChannelController {
         log.info("[CHANNEL] : Update Message List ({})", reference);
         // MessageList
         MessageListResponseDto responseDto = messageService.findMessageListByReference(reference);
-        simpMessagingTemplate.convertAndSend( BROKERPREFIX +"/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
+        simpMessagingTemplate.convertAndSend( BROKERPREFIX + "/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
     }
 
     @MessageMapping("/channel/create/simple")
