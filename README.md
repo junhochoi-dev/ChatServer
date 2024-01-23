@@ -1,5 +1,8 @@
-# ChatServer-Core
+# ChatServerCore
 
-### reference
-- https://www.youtube.com/watch?v=o_IjEDAuo8Y
-- https://github.com/JayaramachandranAugustin/ChatApplicationz
+# KAFKA
+
+1. ZOOKEEPER
+   - `bin\windows\zookeeper-server-start.bat config\zookeeper.properties` 
+2. KAFKA
+   g- `bin\windows\kafka-server-start.bat config\server.properties`
