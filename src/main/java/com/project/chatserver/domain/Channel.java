@@ -8,15 +8,13 @@ import java.time.LocalDateTime;
 
 import com.project.chatserver.domain.type.AccessType;
 import com.project.chatserver.domain.type.ChannelType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Channel{
     @Id
     @GeneratedValue

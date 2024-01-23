@@ -20,12 +20,11 @@ public class ChannelService {
 
 	public List<ChannelDto> findChannelListById(Long memberId) {
 		ModelMapper mapper = new ModelMapper();
-		Optional<Channel> channels = channelRepository.findById(memberId);
+		List<Channel> channels = channelRepository.findAllById(memberId);
 		List<ChannelDto> channelDtos = new ArrayList<>();
-		if(channels.isPresent()){
-			for(Channel channel: channels.stream().toList()){
-				channelDtos.add(mapper.map(channel, ChannelDto.class));
-			}
+		for(Channel channel: channels){
+			System.out.println(channel.getName());
+			channelDtos.add(mapper.map(channel, ChannelDto.class));
 		}
 		return channelDtos;
 	}

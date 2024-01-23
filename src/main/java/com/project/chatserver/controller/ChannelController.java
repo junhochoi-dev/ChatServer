@@ -32,11 +32,15 @@ public class ChannelController {
 
     private final ChannelService channelService;
 
-    @SubscribeMapping("/channel/{memberId}")
+    @SubscribeMapping("/channel/notification/{memberId}")
     public void test1(@DestinationVariable Long memberId){
         System.out.println("server를 통한 구독");
         List<ChannelDto> channels = channelService.findChannelListById(memberId);
-        simpMessagingTemplate.convertAndSend("/server/channel/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channels));
+        simpMessagingTemplate.convertAndSend("/server/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channels));
+    }
+    @SubscribeMapping("/channel/{reference}")
+    public void test11(@DestinationVariable String reference){
+        simpMessagingTemplate.convertAndSend("/server/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body("태규태규태규"));
     }
 
     @Deprecated
