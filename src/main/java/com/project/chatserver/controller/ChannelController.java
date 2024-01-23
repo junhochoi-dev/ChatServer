@@ -5,6 +5,8 @@ import com.project.chatserver.data.MessageDto;
 import com.project.chatserver.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -32,8 +35,8 @@ public class ChannelController {
     @SubscribeMapping("/channel/{memberId}")
     public void test1(@DestinationVariable Long memberId){
         System.out.println("server를 통한 구독");
-        List<ChannelDto> channelList = channelService.findChannelListById(memberId);
-        simpMessagingTemplate.convertAndSend("/server/channel/" + memberId, channelList);
+        List<ChannelDto> channels = channelService.findChannelListById(memberId);
+        simpMessagingTemplate.convertAndSend("/server/channel/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channels));
     }
 
     @Deprecated

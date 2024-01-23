@@ -5,11 +5,18 @@ import com.project.chatserver.domain.type.ChannelType;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record ChannelDto (
     String id,
+
     String name,
     String reference,
+
     AccessType accessType,
-    ChannelType channelType
+    ChannelType channelType,
+
+    LocalDateTime createdTime,
+    LocalDateTime updatedTime
 ) { }
