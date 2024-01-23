@@ -44,7 +44,7 @@ public class ChannelController {
         log.info("[CHANNEL] : Update Channel List ({})", memberId);
         // ChannelList
         List<ChannelDto> channelDtos = channelService.findChannelListByMemberId(memberId);
-        simpMessagingTemplate.convertAndSend(BROKERPREFIX+ "/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
+        simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
     }
 
     @SubscribeMapping("/channel/{reference}")
@@ -52,7 +52,7 @@ public class ChannelController {
         log.info("[CHANNEL] : Update Message List ({})", reference);
         // MessageList
         MessageListResponseDto responseDto = messageService.findMessageListByReference(reference);
-        simpMessagingTemplate.convertAndSend( BROKERPREFIX + "/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
+        simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
     }
 
     @MessageMapping("/channel/create/simple")
