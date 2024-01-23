@@ -35,11 +35,11 @@ public class ChannelController {
         return null;
     }
 
-    @PostMapping("/channel/private/search")
-    public String searchPrivateChannel(@RequestBody Long memberId){
-        // 나랑 연결된 채널 찾기
-        return null;
-    }
+    // @PostMapping("/channel/private/search")
+    // public String searchPrivateChannel(@RequegstBody Long memberId){
+    //     // 나랑 연결된 채널 찾기
+    //     return null;
+    // }
 
     @PostMapping("/channel/public/search")
     public String searchPublicChannel(@RequestBody String name){
