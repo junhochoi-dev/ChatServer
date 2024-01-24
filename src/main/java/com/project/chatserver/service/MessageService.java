@@ -39,7 +39,7 @@ public class MessageService {
                     .channelId(message.getChannelId())
                     .reference(message.getReference())
                     .build();
-            messageResponseDto.setNickname(memberRepository.findById(message.getMemberId()).get().getNickname());
+            messageResponseDto.setNickname(memberRepository.findByMemberId(message.getMemberId()).getNickname());
             responseDto.getMessageResponseDtoList().add(messageResponseDto);
         }
         return responseDto;
@@ -66,8 +66,6 @@ public class MessageService {
                 .channelId(requestDto.getChannelId())
                 .reference(requestDto.getReference())
                 .build();
-        System.out.println("###" + requestDto.getMemberId());
-        System.out.println("###" + message.getMemberId());
         messageResponseDto.setNickname(memberRepository.findByMemberId(message.getMemberId()).getNickname());
         responseDto.getMessageResponseDtoList().add(messageResponseDto);
         return responseDto;
