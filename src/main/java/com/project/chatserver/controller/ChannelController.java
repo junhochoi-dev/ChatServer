@@ -39,12 +39,12 @@ public class ChannelController {
 
     private final String BROKERPREFIX = "/server";
 
-    @SubscribeMapping("/channel/notification/{memberId}")
+    @SubscribeMapping("/channel/connection/{memberId}")
     public void updateChannelList(@DestinationVariable Long memberId) {
         log.info("[CHANNEL] : Update Channel List ({})", memberId);
         // ChannelList
-        List<ChannelDto> channelDtos = channelService.findChannelListByMemberId(memberId);
-        simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/notification/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtos));
+        List<ChannelDto> channelDtoList = channelService.findChannelListByMemberId(memberId);
+        simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/connection/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtoList));
     }
 
     @SubscribeMapping("/channel/{reference}")

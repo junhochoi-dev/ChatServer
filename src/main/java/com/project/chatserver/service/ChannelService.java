@@ -5,6 +5,7 @@ import com.project.chatserver.data.request.CreateMultipleChannelRequestDto;
 import com.project.chatserver.data.request.CreateSimpleChannelRequestDto;
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.domain.MemberChannel;
+import com.project.chatserver.domain.type.ChannelType;
 import com.project.chatserver.repository.ChannelRepository;
 import com.project.chatserver.repository.MemberChannelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,27 @@ public class ChannelService {
     private final MemberChannelRepository memberChannelRepository;
 
     public List<ChannelDto> findChannelListByMemberId(Long memberId) {
-        List<MemberChannel> memberChannels = memberChannelRepository.findAllByMemberId(memberId);
-        List<ChannelDto> channelDtos = new ArrayList<>();
-        for (MemberChannel memberChannel : memberChannels) {
-            ChannelDto channelDto = ChannelDto.builder().reference(memberChannel.getReference()).build();
-            channelDtos.add(channelDto);
+        List<MemberChannel> memberChannelList = memberChannelRepository.findAllByMemberId(memberId);
+        List<ChannelDto> channelDtoList = new ArrayList<>();
+        for (MemberChannel memberChannel : memberChannelList) {
+            Channel channel = channelRepository.findByReference(memberChannel.getReference());
+            ChannelDto channelDto = ChannelDto.builder()
+                    // MemberId와 ChannelType에 따라 분기
+                    //.name()
+                    .accessType(channel.getAccessType())
+                    .channelType(channel.getChannelType())
+                    .createdTime(channel.getCreatedTime())
+                    .updatedTime(channel.getUpdatedTime())
+                    .build();
+            if (channel.getChannelType() == ChannelType.SIMPLE) {
+                channelDto.setName(memberChannelRepository.findByMemberIdNotAndReference(memberId, memberChannel.getReference()).getNickname());
+            }
+            if (channel.getChannelType() == ChannelType.MULTIPLE) {
+                channelDto.setName(channel.getName());
+            }
+            channelDtoList.add(channelDto);
         }
-        return channelDtos;
+        return channelDtoList;
     }
 
     @Transactional

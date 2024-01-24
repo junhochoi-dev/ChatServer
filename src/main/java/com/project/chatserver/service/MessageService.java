@@ -2,6 +2,7 @@ package com.project.chatserver.service;
 
 import com.project.chatserver.data.ChannelDto;
 import com.project.chatserver.data.MessageDto;
+import com.project.chatserver.data.request.MessageRequestDto;
 import com.project.chatserver.data.response.MessageListResponseDto;
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.domain.Message;
@@ -20,35 +21,50 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MessageService {
-	private final MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
-	@Transactional(readOnly = true)
-	public MessageListResponseDto findMessageListByReference(String reference) {
-		List<Message> messageList = messageRepository.findAllByReference(reference);
-		MessageListResponseDto responseDto = new MessageListResponseDto();
-		for (Message message : messageList) {
-			MessageDto messageDto = MessageDto.builder()
-				.content(message.getContent())
-				.messageType(message.getMessageType())
-				.createdTime(message.getCreatedTime())
-				.memberId(message.getMemberId())
-				.nickname(message.getNickname())
-				.channelId(message.getChannelId())
-				.reference(message.getReference())
-				.build();
-			responseDto.getMessageDtoList().add(messageDto);
-		}
-		return responseDto;
-	}
+    @Transactional(readOnly = true)
+    public MessageListResponseDto findMessageListByReference(String reference) {
+        List<Message> messageList = messageRepository.findAllByReference(reference);
+        MessageListResponseDto responseDto = new MessageListResponseDto();
+        for (Message message : messageList) {
+            MessageDto messageDto = MessageDto.builder()
+                    .content(message.getContent())
+                    .messageType(message.getMessageType())
+                    .createdTime(message.getCreatedTime())
+                    .memberId(message.getMemberId())
+                    .nickname(message.getNickname())
+                    .channelId(message.getChannelId())
+                    .reference(message.getReference())
+                    .build();
+            responseDto.getMessageDtoList().add(messageDto);
+        }
+        return responseDto;
+    }
 
-	@Transactional
-	public void saveMessage(MessageDto messageDto) {
-		Message message = Message.builder()
-			.memberId(messageDto.getMemberId())
-			.content(messageDto.getContent())
-			.reference(messageDto.getReference())
-			.createdTime(LocalDateTime.now())
-			.build();
-		messageRepository.save(message);
-	}
+    @Transactional
+    public MessageListResponseDto saveMessage(MessageRequestDto requestDto) {
+        Message message = Message.builder()
+                .content(requestDto.getContent())
+                .messageType(requestDto.getMessageType())
+                .createdTime(requestDto.getCreatedTime())
+                .memberId(requestDto.getMemberId())
+                .nickname(requestDto.getNickname())
+                .channelId(requestDto.getChannelId())
+                .reference(requestDto.getReference())
+                .build();
+        messageRepository.save(message);
+
+        MessageListResponseDto responseDto = new MessageListResponseDto();
+        responseDto.getMessageDtoList().add(MessageDto.builder()
+                .content(requestDto.getContent())
+                .messageType(requestDto.getMessageType())
+                .createdTime(requestDto.getCreatedTime())
+                .memberId(requestDto.getMemberId())
+                .nickname(requestDto.getNickname())
+                .channelId(requestDto.getChannelId())
+                .reference(requestDto.getReference())
+                .build());
+        return responseDto;
+    }
 }

@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface MemberChannelRepository extends JpaRepository<MemberChannel, Long> {
+
+    MemberChannel findByMemberIdNotAndReference(Long memberId, String reference);
     List<MemberChannel> findAllByMemberId(Long memberId);
+
 }

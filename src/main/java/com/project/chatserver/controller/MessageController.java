@@ -1,6 +1,8 @@
 package com.project.chatserver.controller;
 
 import com.project.chatserver.data.MessageDto;
+import com.project.chatserver.data.request.MessageRequestDto;
+import com.project.chatserver.data.response.MessageListResponseDto;
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -28,43 +30,10 @@ public class MessageController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final MessageService messageService;
 
-    static class TestDto{
-        String content;
-        Long senderId;
-        String nickname;
-
-        public String getContent() {
-            return content;
-        }
-
-        public Long getSenderId() {
-            return senderId;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-    }
     @MessageMapping("/message/{reference}")
-    public void test11(@Payload TestDto testDto, @DestinationVariable String reference){
-        log.info("채팅 보내기");
-
-        List<MessageDto> messageDtos = new ArrayList<>();
-        MessageDto messageDto = MessageDto.builder()
-                .reference(reference)
-                .content(testDto.content)
-                .memberId(testDto.senderId)
-                .nickname(testDto.nickname)
-                .build();
-
-        // 디비에 저장
-        messageService.saveMessage(messageDto);
-        messageDtos.add(messageDto);
-        simpMessagingTemplate.convertAndSend("/server/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(messageDtos));
-    }
-
-    @MessageMapping("/message/notification")
-    public void test22(@Payload MessageDto messageDto){
-        simpMessagingTemplate.convertAndSend("/server/channel/notification", "공지내용");
+    public void createMessage(@Payload MessageRequestDto requestDto, @DestinationVariable String reference){
+        log.info("[Message] Message Create ({}, {})", requestDto.getMemberId(), requestDto.getChannelId());
+        MessageListResponseDto responseDto = messageService.saveMessage(requestDto);
+        simpMessagingTemplate.convertAndSend("/server/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
     }
 }
