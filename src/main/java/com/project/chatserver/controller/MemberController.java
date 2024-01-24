@@ -15,7 +15,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/server/member")
+    @PostMapping("/member")
     public ResponseEntity<?> manageMember(@RequestBody MemberRequestDto requestDto){
         memberService.manageMember(requestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
