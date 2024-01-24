@@ -16,16 +16,14 @@ public class MemberChannel {
 
     // Member
     private Long memberId;
-    private String nickname;
 
     // Channel
     private Long channelId;
     private String reference;
 
     @Builder
-    public MemberChannel(Long memberId, String nickname, Long channelId, String reference) {
+    public MemberChannel(Long memberId, Long channelId, String reference) {
         this.memberId = memberId;
-        this.nickname = nickname;
         this.channelId = channelId;
         this.reference = reference;
     }

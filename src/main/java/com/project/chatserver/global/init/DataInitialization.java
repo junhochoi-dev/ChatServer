@@ -1,6 +1,7 @@
 package com.project.chatserver.global.init;
 
 import com.project.chatserver.domain.Channel;
+import com.project.chatserver.domain.Member;
 import com.project.chatserver.domain.MemberChannel;
 import com.project.chatserver.domain.Message;
 import com.project.chatserver.domain.type.AccessType;
@@ -8,6 +9,7 @@ import com.project.chatserver.domain.type.ChannelType;
 import com.project.chatserver.domain.type.MessageType;
 import com.project.chatserver.repository.ChannelRepository;
 import com.project.chatserver.repository.MemberChannelRepository;
+import com.project.chatserver.repository.MemberRepository;
 import com.project.chatserver.repository.MessageRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.Builder;
@@ -20,45 +22,52 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 public class DataInitialization {
+    private final MemberRepository memberRepository;
     private final MessageRepository messageRepository;
     private final ChannelRepository channelRepository;
     private final MemberChannelRepository memberChannelRepository;
 
     @PostConstruct
     private void postConstruct() {
-        Channel channel1 = new Channel("김태규님과 김단이님의 채팅방", "ABC", AccessType.PUBLIC, ChannelType.SIMPLE);
-        Channel channel2 = new Channel("김태규님과 윤설님의 채팅방", "DEF", AccessType.PUBLIC, ChannelType.SIMPLE);
-        Channel channel3 = new Channel("김태규님과 오희주님의 채팅방", "GHI", AccessType.PUBLIC, ChannelType.SIMPLE);
-        channelRepository.save(channel1);
-        channelRepository.save(channel2);
-        channelRepository.save(channel3);
+        Member member1 = new Member(97531677L, "김태규");
+        Member member2 = new Member(64817041L, "김정욱");
+        Member member3 = new Member(27275274L, "윤설");
+        Member member4 = new Member(91579680L, "오희주");
+        Member member5 = new Member(77108539L, "최준호");
+        Member member6 = new Member(29934527L, "황주영");
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        memberRepository.save(member4);
+        memberRepository.save(member5);
+        memberRepository.save(member6);
 
-        MemberChannel memberChannel1 = MemberChannel.builder().memberId(123L).reference("ABC").build();
-        MemberChannel memberChannel2 = MemberChannel.builder().memberId(123L).reference("DEF").build();
-        MemberChannel memberChannel3 = MemberChannel.builder().memberId(123L).reference("GHI").build();
+        Channel channel1 = new Channel("8생활관 6공주", "communitiy", AccessType.PUBLIC, ChannelType.MULTIPLE);
+        channelRepository.save(channel1);
+
+        MemberChannel memberChannel1 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member1.getId()).build();
+        MemberChannel memberChannel2 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member2.getId()).build();
+        MemberChannel memberChannel3 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member3.getId()).build();
+        MemberChannel memberChannel4 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member4.getId()).build();
+        MemberChannel memberChannel5 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member5.getId()).build();
+        MemberChannel memberChannel6 = MemberChannel.builder()
+                .channelId(channel1.getId()).reference(channel1.getReference())
+                .memberId(member6.getId()).build();
         memberChannelRepository.save(memberChannel1);
         memberChannelRepository.save(memberChannel2);
         memberChannelRepository.save(memberChannel3);
-
-        Message message1 = Message.builder().memberId(123L).nickname("김태규").content("아 입실하기 안눌렀다").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
-        Message message2 = Message.builder().memberId(456L).nickname("김단이").content("사유서 제출하세요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
-        Message message3 = Message.builder().memberId(123L).nickname("김태규").content("이닦고 올게요!").createdTime(LocalDateTime.now()).messageType(MessageType.MESSAGE_TXT).build();
-        messageRepository.save(message1);
-        messageRepository.save(message2);
-        messageRepository.save(message3);
-
-
-//        Channel c1 = Channel.builder()
-//                .name("김태규와 김단이의 채팅방").reference("ABCD").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
-//        channelRepository.save(c1);
-//        Channel c2 = Channel.builder()
-//                .name("김태규와 윤설의 채팅방").reference("EFGH").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
-//        channelRepository.save(c2);
-//        Channel c3 = Channel.builder()
-//                .name("김태규와 오희주의 채팅방").reference("QSIW").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
-//        channelRepository.save(c3);
-//        Channel c4 = Channel.builder()
-//                .name("김태규의 홀로 채팅방").reference("AIOW").accessType(AccessType.PUBLIC).channelType(ChannelType.SINGLE).build();
-//        channelRepository.save(c4);
+        memberChannelRepository.save(memberChannel4);
+        memberChannelRepository.save(memberChannel5);
+        memberChannelRepository.save(memberChannel6);
     }
 }

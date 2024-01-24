@@ -10,8 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member {
     @Id
-    @Getter
     private Long id;
 
     private String nickname;
+
+    public Member(Long id, String nickname) {
+        this.id = id;
+        this.nickname = nickname;
+    }
 }
