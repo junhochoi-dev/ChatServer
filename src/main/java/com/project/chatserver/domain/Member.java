@@ -1,6 +1,7 @@
 package com.project.chatserver.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member {
     @Id
+    @GeneratedValue
     private Long id;
-
+    private Long memberId;
     private String nickname;
 
-    public Member(Long id, String nickname) {
-        this.id = id;
+    public Member(Long memberId, String nickname) {
+        this.memberId = memberId;
         this.nickname = nickname;
     }
 

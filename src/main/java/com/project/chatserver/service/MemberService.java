@@ -17,7 +17,7 @@ public class MemberService {
 
     @Transactional
     public void manageMember(MemberRequestDto requestDto) {
-        Member member = memberRepository.findById(requestDto.getMemberId()).get();
+        Member member = memberRepository.findByMemberId(requestDto.getMemberId());
         if(member == null){
             member = new Member(requestDto.getMemberId(), requestDto.getNickname());
             memberRepository.save(member);

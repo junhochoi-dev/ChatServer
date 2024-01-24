@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +47,7 @@ public class ChannelService {
                     .build();
             if (channel.getChannelType() == ChannelType.SIMPLE) {
                 Long oppositeId = memberChannelRepository.findByMemberIdNotAndReference(memberId, memberChannel.getReference()).getMemberId();
-                String nickname = memberRepository.findById(oppositeId).get().getNickname();
+                String nickname = memberRepository.findByMemberId(oppositeId).getNickname();
                 channelDto.setName(nickname);
             }
             if (channel.getChannelType() == ChannelType.MULTIPLE) {
@@ -69,7 +70,8 @@ public class ChannelService {
         if (channel == null) {
             channel = Channel.builder()
                     .name(memberId1.toString() + "과" + memberId2.toString() + "의 채팅방").reference(reference)
-                    .channelType(ChannelType.SIMPLE).accessType(AccessType.PRIVATE).build();
+                    .channelType(ChannelType.SIMPLE).accessType(AccessType.PRIVATE)
+                    .createdTime(LocalDateTime.now()).updatedTime(LocalDateTime.now()).build();
             channelRepository.save(channel);
             MemberChannel memberChannel1 = MemberChannel.builder().channelId(channel.getId()).reference(reference).memberId(memberId1).build();
             MemberChannel memberChannel2 = MemberChannel.builder().channelId(channel.getId()).reference(reference).memberId(memberId2).build();
