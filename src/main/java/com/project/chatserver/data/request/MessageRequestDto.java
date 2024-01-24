@@ -17,7 +17,6 @@ public class MessageRequestDto {
 
     // Member
     private Long memberId;
-    private String nickname;
 
     // Channel
     private Long channelId;

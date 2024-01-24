@@ -24,20 +24,17 @@ public class Message {
 
     // Member
     private Long memberId;
-    private String nickname;
 
     // Channel
     private Long channelId;
     private String reference;
 
     @Builder
-    public Message(String content, MessageType messageType, LocalDateTime createdTime, Long memberId, String nickname,
-        Long channelId, String reference) {
+    public Message(String content, MessageType messageType, LocalDateTime createdTime, Long memberId, Long channelId, String reference) {
         this.content = content;
         this.messageType = messageType;
         this.createdTime = createdTime;
         this.memberId = memberId;
-        this.nickname = nickname;
         this.channelId = channelId;
         this.reference = reference;
     }

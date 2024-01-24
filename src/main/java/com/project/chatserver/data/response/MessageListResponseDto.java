@@ -13,9 +13,8 @@ import lombok.Setter;
 @Setter
 public class MessageListResponseDto {
 
-	List<MessageDto> messageDtoList;
-
+	List<MessageResponseDto> messageResponseDtoList;
 	public MessageListResponseDto() {
-		this.messageDtoList = new ArrayList<>();
+		this.messageResponseDtoList = new ArrayList<>();
 	}
 }

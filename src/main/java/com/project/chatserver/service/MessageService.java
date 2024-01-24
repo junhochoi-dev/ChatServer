@@ -4,8 +4,10 @@ import com.project.chatserver.data.ChannelDto;
 import com.project.chatserver.data.MessageDto;
 import com.project.chatserver.data.request.MessageRequestDto;
 import com.project.chatserver.data.response.MessageListResponseDto;
+import com.project.chatserver.data.response.MessageResponseDto;
 import com.project.chatserver.domain.Channel;
 import com.project.chatserver.domain.Message;
+import com.project.chatserver.repository.MemberRepository;
 import com.project.chatserver.repository.MessageRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MessageService {
+    private final MemberRepository memberRepository;
     private final MessageRepository messageRepository;
 
     @Transactional(readOnly = true)
@@ -28,16 +31,16 @@ public class MessageService {
         List<Message> messageList = messageRepository.findAllByReference(reference);
         MessageListResponseDto responseDto = new MessageListResponseDto();
         for (Message message : messageList) {
-            MessageDto messageDto = MessageDto.builder()
+            MessageResponseDto messageResponseDto = MessageResponseDto.builder()
                     .content(message.getContent())
                     .messageType(message.getMessageType())
                     .createdTime(message.getCreatedTime())
                     .memberId(message.getMemberId())
-                    .nickname(message.getNickname())
                     .channelId(message.getChannelId())
                     .reference(message.getReference())
                     .build();
-            responseDto.getMessageDtoList().add(messageDto);
+            messageResponseDto.setNickname(memberRepository.findById(message.getMemberId()).get().getNickname());
+            responseDto.getMessageResponseDtoList().add(messageResponseDto);
         }
         return responseDto;
     }
@@ -49,22 +52,22 @@ public class MessageService {
                 .messageType(requestDto.getMessageType())
                 .createdTime(requestDto.getCreatedTime())
                 .memberId(requestDto.getMemberId())
-                .nickname(requestDto.getNickname())
                 .channelId(requestDto.getChannelId())
                 .reference(requestDto.getReference())
                 .build();
         messageRepository.save(message);
 
         MessageListResponseDto responseDto = new MessageListResponseDto();
-        responseDto.getMessageDtoList().add(MessageDto.builder()
+        MessageResponseDto messageResponseDto = MessageResponseDto.builder()
                 .content(requestDto.getContent())
                 .messageType(requestDto.getMessageType())
                 .createdTime(requestDto.getCreatedTime())
                 .memberId(requestDto.getMemberId())
-                .nickname(requestDto.getNickname())
                 .channelId(requestDto.getChannelId())
                 .reference(requestDto.getReference())
-                .build());
+                .build();
+        messageResponseDto.setNickname(memberRepository.findById(message.getMemberId()).get().getNickname());
+        responseDto.getMessageResponseDtoList().add(messageResponseDto);
         return responseDto;
     }
 }
