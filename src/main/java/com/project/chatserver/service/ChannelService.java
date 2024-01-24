@@ -47,7 +47,6 @@ public class ChannelService {
                     .build();
             if (channel.getChannelType() == ChannelType.SIMPLE) {
                 Long oppositeId = memberChannelRepository.findByMemberIdNotAndReference(memberId, memberChannel.getReference()).getMemberId();
-                System.out.println(oppositeId + " " + memberId);
                 String nickname = memberRepository.findByMemberId(oppositeId).getNickname();
                 channelDto.setName(nickname);
             }

@@ -50,7 +50,7 @@ public class MessageService {
         Message message = Message.builder()
                 .content(requestDto.getContent())
                 .messageType(requestDto.getMessageType())
-                .createdTime(requestDto.getCreatedTime())
+                .createdTime(LocalDateTime.now())
                 .memberId(requestDto.getMemberId())
                 .channelId(requestDto.getChannelId())
                 .reference(requestDto.getReference())
