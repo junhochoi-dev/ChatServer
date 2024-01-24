@@ -47,12 +47,13 @@ public class ChannelController {
         simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/connection/" + memberId, ResponseEntity.status(HttpStatus.OK).body(channelDtoList));
     }
 
-    @SubscribeMapping("/channel/{reference}")
-    public void updateMessageList(@DestinationVariable String reference) {
+    @GetMapping("/channel/{reference}")
+    public ResponseEntity<?> updateMessageList(@PathVariable String reference) {
         log.info("[CHANNEL] : Update Message List ({})", reference);
         // MessageList
         MessageListResponseDto responseDto = messageService.findMessageListByReference(reference);
-        simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        //simpMessagingTemplate.convertAndSend(BROKERPREFIX + "/channel/" + reference, ResponseEntity.status(HttpStatus.OK).body(responseDto));
     }
 
     @MessageMapping("/channel/create/simple")
