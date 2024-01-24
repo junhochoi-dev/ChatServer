@@ -39,13 +39,13 @@ public class WebSocketEventListener {
     @EventListener
     private void handleSubscribeEvent(SessionSubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        log.info("[Subscribe] {}", accessor.getDestination());
+        log.info("[SUBSCRIBE] {}", accessor.getDestination());
     }
 
     @EventListener
     private void handleUnsubscribeEvent(SessionUnsubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();
-        log.info("[Unsubscribe] {}", accessor.getDestination());
+        log.info("[UNSUBSCRIBE] {}", accessor.getDestination());
     }
 }

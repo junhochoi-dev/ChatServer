@@ -21,7 +21,7 @@ public class MemberController {
 
     @PostMapping("/member")
     public ResponseEntity<?> manageMember(@RequestBody MemberRequestDto requestDto){
-        log.info("Manage Member !!! {} {}", requestDto.getMemberId(), requestDto.getNickname());
+        log.info("[MEMBER] ({}, {})", requestDto.getMemberId(), requestDto.getNickname());
         memberService.manageMember(requestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
