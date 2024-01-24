@@ -27,31 +27,25 @@ public class WebSocketEventListener {
     @EventListener
     public void handleWebSocketConnectionEvent(SessionConnectEvent sessionConnectEvent){
         String sessionId = sessionConnectEvent.getMessage().getHeaders().get("simpSessionId").toString();
-        log.info("CONNECTION SOCKETID: [{}]", sessionId);
+        log.info("[CONNECTION] ({})", sessionId);
     }
 
     @EventListener
     public void handlerWebSocketDisconnectionEvent(SessionDisconnectEvent sessionDisconnectEvent){
         String sessionId = sessionDisconnectEvent.getSessionId();
-        log.info("DISCONNECT SOCKETID: [{}]", sessionId);
+        log.info("[DISCONNECT] ({})", sessionId);
     }
 
     @EventListener
     private void handleSubscribeEvent(SessionSubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        String destination = accessor.getDestination();
-
-        System.out.println("User subscribed to: " + destination + " - " + accessor.getUser());
-
-
-        System.out.println(event.getMessage());
+        log.info("[Subscribe] {}", accessor.getDestination());
     }
 
     @EventListener
     private void handleUnsubscribeEvent(SessionUnsubscribeEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String destination = accessor.getDestination();
-
-        System.out.println("User unsubscribed from: " + destination + " - " + accessor.getUser());
+        log.info("[Unsubscribe] {}", accessor.getDestination());
     }
 }
