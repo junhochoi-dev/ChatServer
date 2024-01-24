@@ -11,6 +11,7 @@ import com.project.chatserver.repository.ChannelRepository;
 import com.project.chatserver.repository.MemberChannelRepository;
 import com.project.chatserver.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -36,6 +38,7 @@ public class ChannelService {
             ChannelDto channelDto = ChannelDto.builder()
                     // MemberId와 ChannelType에 따라 분기
                     //.name()
+                    .reference(channel.getReference())
                     .accessType(channel.getAccessType())
                     .channelType(channel.getChannelType())
                     .createdTime(channel.getCreatedTime())
@@ -75,7 +78,14 @@ public class ChannelService {
         }
     }
 
+    @Transactional
     public void createMultipleChannel(CreateMultipleChannelRequestDto requestDto) {
-
+        String reference = UUID.randomUUID().toString();
+        Channel channel = Channel.builder()
+                .name(requestDto.getName()).reference(reference)
+                .channelType(ChannelType.MULTIPLE).accessType(requestDto.getAccessType()).build();
+        channelRepository.save(channel);
+        MemberChannel memberChannel = MemberChannel.builder().channelId(channel.getId()).reference(reference).memberId(requestDto.getMemberId()).build();
+        memberChannelRepository.save(memberChannel);
     }
 }

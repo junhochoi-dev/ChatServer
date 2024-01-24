@@ -42,7 +42,7 @@ public class DataInitialization {
         memberRepository.save(member5);
         memberRepository.save(member6);
 
-        Channel channel1 = new Channel("8생활관 6공주", "communitiy", AccessType.PUBLIC, ChannelType.MULTIPLE);
+        Channel channel1 = new Channel("8생활관 6공주", "communitiy", AccessType.PUBLIC, ChannelType.MULTIPLE, LocalDateTime.now(), LocalDateTime.now());
         channelRepository.save(channel1);
 
         MemberChannel memberChannel1 = MemberChannel.builder()

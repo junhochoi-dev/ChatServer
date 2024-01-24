@@ -32,10 +32,13 @@ public class Channel {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Channel(String name, String reference, AccessType accessType, ChannelType channelType) {
+
+    public Channel(String name, String reference, AccessType accessType, ChannelType channelType, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.name = name;
         this.reference = reference;
         this.accessType = accessType;
         this.channelType = channelType;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
     }
 }
